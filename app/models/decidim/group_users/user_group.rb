@@ -14,6 +14,10 @@ module Decidim
       def deleted?
         deleted_at.present?
       end
+
+      def presenter
+        Decidim::UserGroupPresenter.new(self)
+      end
     end
   end
 end

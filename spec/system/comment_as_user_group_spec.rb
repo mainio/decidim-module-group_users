@@ -17,12 +17,11 @@ describe "Comment as user group" do
   before do
     switch_to_host(organization.host)
     login_as user, scope: :user
+    visit_proposal
   end
 
   context "when user belongs to a verified group" do
     it "shows the comment-as dropdown" do
-      visit_proposal
-
       within ".add-comment" do
         expect(page).to have_css(".comment__as")
         expect(page).to have_content("Your profile")
@@ -30,26 +29,19 @@ describe "Comment as user group" do
     end
 
     it "shows the user's name as default selection" do
-      visit_proposal
-
       within ".comment__as" do
         expect(page).to have_content(user.name)
       end
     end
 
     it "shows the user group as an option" do
-      visit_proposal
-
       within ".comment__as" do
-        # Click to open dropdown
         find("button").click
         expect(page).to have_content("My Test Group")
       end
     end
 
     it "allows selecting the user group" do
-      visit_proposal
-
       within ".comment__as" do
         find("button").click
         find("li", text: "My Test Group").click
@@ -60,27 +52,20 @@ describe "Comment as user group" do
     end
 
     it "submits a comment as the user group", :slow do
-      visit_proposal
-
       within ".add-comment" do
-        # Select the user group
         within ".comment__as" do
           find("button").click
           find("li", text: "My Test Group").click
         end
 
-        # Write and submit the comment
         fill_in "comment[body]", with: "This is a group comment"
         click_on "Publish comment"
       end
 
-      # Verify the comment was published
       expect(page).to have_content("This is a group comment")
     end
 
     it "submits a comment as the user (default)" do
-      visit_proposal
-
       within ".add-comment" do
         fill_in "comment[body]", with: "This is a personal comment"
         click_on "Publish comment"
@@ -90,8 +75,6 @@ describe "Comment as user group" do
     end
 
     it "creates a comment attributed to the user group" do
-      visit_proposal
-
       within ".add-comment" do
         within ".comment__as" do
           find("button").click
@@ -104,11 +87,29 @@ describe "Comment as user group" do
 
       expect(page).to have_content("This is a group comment")
 
-      # Verify the comment is attributed to the group
       comment = Decidim::Comments::Comment.last
       expect(comment.body["en"]).to eq("This is a group comment")
 
       expect(comment.decidim_user_group_id).to eq(user_group.id)
+    end
+
+    it "displays the group name as the comment author" do
+      within ".add-comment" do
+        within ".comment__as" do
+          find("button").click
+          find("li", text: "My Test Group").click
+        end
+
+        fill_in "comment[body]", with: "This is a group comment"
+        click_on "Publish comment"
+      end
+
+      expect(page).to have_content("This is a group comment")
+
+      within ".comment-thread", text: "This is a group comment" do
+        expect(page).to have_content("My Test Group")
+        expect(page).not_to have_content(user.name)
+      end
     end
   end
 
@@ -116,8 +117,6 @@ describe "Comment as user group" do
     let!(:user_group) { create(:user_group, :unverified, organization: organization, name: "Unverified Group") }
 
     it "does not show the unverified group in the dropdown" do
-      visit_proposal
-
       within ".add-comment" do
         expect(page).not_to have_css(".comment__as button")
         expect(page).not_to have_content("Unverified Group")
@@ -130,8 +129,6 @@ describe "Comment as user group" do
     let!(:user_group) { nil }
 
     it "does not show the comment-as dropdown" do
-      visit_proposal
-
       within ".add-comment" do
         expect(page).not_to have_css(".comment__as button")
       end
@@ -145,8 +142,6 @@ describe "Comment as user group" do
     end
 
     it "shows all groups in the dropdown" do
-      visit_proposal
-
       within ".comment__as" do
         find("button").click
         expect(page).to have_content("My Test Group")
@@ -155,8 +150,6 @@ describe "Comment as user group" do
     end
 
     it "allows switching between groups" do
-      visit_proposal
-
       within ".comment__as" do
         find("button").click
         find("li", text: "My Test Group").click

@@ -18,6 +18,9 @@ module Decidim
           Decidim::Comments::CommentFormCell.include(
             Decidim::GroupUsers::CommentFormCellExtensions
           )
+          Decidim::Comments::CommentCell.include(
+            Decidim::GroupUsers::CommentCellExtensions
+          )
           # models
           Decidim::User.include(
             Decidim::GroupUsers::UserExtensions
