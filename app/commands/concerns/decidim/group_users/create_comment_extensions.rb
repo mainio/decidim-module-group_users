@@ -15,7 +15,7 @@ module Decidim
 
           return if form.user_group_id.blank?
 
-          @comment.update(:decidim_user_group_id, form.user_group_id)
+          @comment.update(decidim_user_group_id: form.user_group_id)
         end
       end
     end
