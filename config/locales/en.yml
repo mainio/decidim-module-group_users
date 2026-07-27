@@ -1,0 +1,8 @@
+en:
+  decidim:
+    components:
+      add_comment_form:
+        form:
+          user_group_id:
+            your_profile: Your profile
+            comment_as: Comment as

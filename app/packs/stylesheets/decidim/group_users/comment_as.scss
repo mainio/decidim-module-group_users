@@ -1,0 +1,60 @@
+.comment {
+  &__as {
+    @apply my-4 px-4 md:p-0;
+
+    &-author-container {
+      @apply flex justify-between items-center;
+    }
+
+    &-author-info {
+      @apply flex items-center gap-2;
+    }
+
+    &-author-name {
+      @apply text-gray-2 font-semibold;
+    }
+
+    &-author-selected {
+      @apply flex flex-col;
+
+      .author__avatar-container {
+        @apply -mt-3.5;
+      }
+    }
+  }
+}
+
+[id*="dropdown-menu-add-comment"] {
+  @apply flex flex-col py-0 mx-0 border-t-0 border-gray-3 cursor-pointer;
+
+  &[aria-hidden="true"] {
+    @apply hidden;
+  }
+}
+
+[data-target*="dropdown-menu-add-comment"] {
+  @apply w-full flex items-center justify-between mb-4 gap-2 px-0 pt-2 pb-0 first-of-type:[&>svg]:block last-of-type:[&>svg]:hidden;
+
+  & > span {
+    @apply hidden font-semibold text-secondary;
+
+    &:only-of-type,
+    &.is-active {
+      @apply flex items-center gap-2 [&_svg]:fill-current;
+    }
+  }
+
+  > svg {
+    @apply w-6 h-6 flex-none text-secondary fill-current;
+  }
+
+  &[aria-expanded="false"] > svg:last-of-type,
+  &[aria-expanded="true"] > svg:first-of-type {
+    @apply hidden;
+  }
+
+  &[aria-expanded="true"] > svg:last-of-type,
+  &[aria-expanded="false"] > svg:first-of-type {
+    @apply block;
+  }
+}
