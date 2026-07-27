@@ -26,9 +26,7 @@ class RevertConvertUserGroupsIntoUsers < ActiveRecord::Migration[7.2]
         restored_extended_data = restored_extended_data.except("patched", "previous_email")
       end
 
-      if group.officialized_at.present?
-        restored_extended_data["verified_at"] = group.officialized_at.iso8601
-      end
+      restored_extended_data["verified_at"] = group.officialized_at.iso8601 if group.officialized_at.present?
       restored_extended_data = restored_extended_data.except("group")
       group.update_columns(
         type: "Decidim::GroupUsers::UserGroup",

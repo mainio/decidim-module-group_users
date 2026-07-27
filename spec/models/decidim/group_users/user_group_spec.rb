@@ -25,7 +25,7 @@ module Decidim
         end
 
         it "returns true when deleted_at is set" do
-          group.update_columns(deleted_at: Time.current)
+          group.update_columns(deleted_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
           expect(group.deleted?).to be(true)
         end
       end

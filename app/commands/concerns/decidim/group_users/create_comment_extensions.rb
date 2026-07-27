@@ -13,9 +13,9 @@ module Decidim
         def create_comment
           original_create_comment
 
-          return unless form.user_group_id.present?
+          return if form.user_group_id.blank?
 
-          @comment.update_column(:decidim_user_group_id, form.user_group_id)
+          @comment.update(:decidim_user_group_id, form.user_group_id)
         end
       end
     end

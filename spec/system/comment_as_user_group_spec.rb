@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "Comment as user group" do
+describe "Comments as user group" do
   let(:organization) { create(:organization) }
   let(:user) { create(:user, :confirmed, organization: organization) }
   let(:participatory_process) { create(:participatory_process, :with_steps, organization: organization) }
@@ -36,14 +36,14 @@ describe "Comment as user group" do
 
     it "shows the user group as an option" do
       within ".comment__as" do
-        find("button").click
+        click_button
         expect(page).to have_content("My Test Group")
       end
     end
 
     it "allows selecting the user group" do
       within ".comment__as" do
-        find("button").click
+        click_button
         find("li", text: "My Test Group").click
       end
 
@@ -54,7 +54,7 @@ describe "Comment as user group" do
     it "submits a comment as the user group", :slow do
       within ".add-comment" do
         within ".comment__as" do
-          find("button").click
+          click_button
           find("li", text: "My Test Group").click
         end
 
@@ -77,7 +77,7 @@ describe "Comment as user group" do
     it "creates a comment attributed to the user group" do
       within ".add-comment" do
         within ".comment__as" do
-          find("button").click
+          click_button
           find("li", text: "My Test Group").click
         end
 
@@ -96,7 +96,7 @@ describe "Comment as user group" do
     it "displays the group name as the comment author" do
       within ".add-comment" do
         within ".comment__as" do
-          find("button").click
+          click_button
           find("li", text: "My Test Group").click
         end
 
@@ -108,7 +108,7 @@ describe "Comment as user group" do
 
       within ".comment-thread", text: "This is a group comment" do
         expect(page).to have_content("My Test Group")
-        expect(page).not_to have_content(user.name)
+        expect(page).to have_no_content(user.name)
       end
     end
   end
@@ -118,8 +118,8 @@ describe "Comment as user group" do
 
     it "does not show the unverified group in the dropdown" do
       within ".add-comment" do
-        expect(page).not_to have_css(".comment__as button")
-        expect(page).not_to have_content("Unverified Group")
+        expect(page).to have_no_css(".comment__as button")
+        expect(page).to have_no_content("Unverified Group")
       end
     end
   end
@@ -130,7 +130,7 @@ describe "Comment as user group" do
 
     it "does not show the comment-as dropdown" do
       within ".add-comment" do
-        expect(page).not_to have_css(".comment__as button")
+        expect(page).to have_no_css(".comment__as button")
       end
     end
   end
@@ -142,21 +142,25 @@ describe "Comment as user group" do
     end
 
     it "shows all groups in the dropdown" do
+      visit_proposal
+
       within ".comment__as" do
-        find("button").click
+        click_button
         expect(page).to have_content("My Test Group")
         expect(page).to have_content("Second Group")
       end
     end
 
     it "allows switching between groups" do
+      visit_proposal
+
       within ".comment__as" do
-        find("button").click
+        click_button
         find("li", text: "My Test Group").click
 
         expect(find("input[value='#{user_group.id}']", visible: :all)).to be_checked
 
-        find("button").click
+        click_button
         find("li", text: "Second Group").click
 
         expect(find("input[value='#{second_group.id}']", visible: :all)).to be_checked

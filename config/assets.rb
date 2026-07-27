@@ -4,5 +4,5 @@ base_path = File.expand_path("..", __dir__)
 
 Decidim::Shakapacker.register_path("#{base_path}/app/packs")
 Decidim::Shakapacker.register_entrypoints(
-  decidim_group_users: "#{base_path}/app/packs/entrypoints/decidim_group_users",
+  decidim_group_users: "#{base_path}/app/packs/entrypoints/decidim_group_users"
 )

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-
 module Decidim
   module GroupUsers
     class UserGroup < UserBaseEntity
-      has_many :memberships, 
+      has_many :memberships,
                class_name: "Decidim::GroupUsers::UserGroupMembership",
-               foreign_key: :decidim_user_group_id
+               foreign_key: :decidim_user_group_id,
+               dependent: :destroy
       has_many :users, through: :memberships
-      
+
       scope :verified, -> { where.not(officialized_at: nil) }
 
       def deleted?
