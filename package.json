@@ -16,5 +16,12 @@
   },
   "browserslist": [
     "extends @decidim/browserslist-config"
-  ]
+  ],
+  "scripts": {
+    "lint": "eslint --no-error-on-unmatched-pattern --ext .js app/packs",
+    "stylelint": "stylelint 'app/packs/**/*.scss' --allow-empty-input"
+  },
+  "stylelint": {
+    "extends": "@decidim/stylelint-config"
+  }
 }

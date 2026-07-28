@@ -9,10 +9,14 @@ export default class extends Controller {
 
   initializeSelection() {
     const firstOption = this.optionTargets[0]
-    if (!firstOption) return
+    if (!firstOption) { 
+      return
+    }
 
     const authorInfo = firstOption.querySelector(".comment__as-author-info")
-    if (!authorInfo) return
+    if (!authorInfo) { 
+      return
+    }
 
     this.displayTarget.innerHTML = authorInfo.innerHTML
     firstOption.style.display = "none"
@@ -21,17 +25,23 @@ export default class extends Controller {
   select(event) {
     const clickedOption = event.currentTarget
     const radio = clickedOption.querySelector("input[type='radio']")
-    if (!radio) return
+    if (!radio) { 
+      return
+    }
 
     radio.checked = true
 
     const authorInfo = clickedOption.querySelector(".comment__as-author-info")
-    if (!authorInfo) return
+    if (!authorInfo) { 
+      return
+    }
 
     this.displayTarget.innerHTML = authorInfo.innerHTML
 
     this.optionTargets.forEach((option) => {
-      option.style.display = option === clickedOption ? "none" : ""
+      option.style.display = option === clickedOption 
+        ? "none" 
+        : "";
     })
   }
 }

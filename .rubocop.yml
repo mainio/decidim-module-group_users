@@ -4,3 +4,5 @@ inherit_gem:
 RSpec/DescribeClass:
   Exclude:
     - "spec/system/**/*"
+Gemspec/DevelopmentDependencies:
+  Enabled: false
