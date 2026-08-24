@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["sina.eftekhar@mainiotech.fi"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/mainio/decidim-module-group_users"
-  s.required_ruby_version = "~> 3.3.0"
+  s.required_ruby_version = "~> 3.4"
 
   s.name = "decidim-group_users"
   s.summary = "A decidim user group module"

@@ -5,7 +5,7 @@ require "spec_helper"
 module Decidim
   describe User do
     let(:organization) { create(:organization) }
-    let(:user) { create(:user, organization: organization) }
+    let(:user) { create(:user, organization:) }
 
     describe "associations" do
       it "has many group_memberships" do
@@ -20,7 +20,7 @@ module Decidim
     end
 
     describe "#user_groups" do
-      let!(:group) { create(:user_group, organization: organization) }
+      let!(:group) { create(:user_group, organization:) }
       let!(:membership) do
         create(:user_group_membership, user:, user_group: group, role: "creator")
       end
@@ -30,13 +30,13 @@ module Decidim
       end
 
       it "returns empty when user has no groups" do
-        other_user = create(:user, organization: organization)
+        other_user = create(:user, organization:)
         expect(other_user.user_groups).to be_empty
       end
     end
 
     describe "#group_memberships" do
-      let!(:group) { create(:user_group, organization: organization) }
+      let!(:group) { create(:user_group, organization:) }
       let!(:membership) do
         create(:user_group_membership, user:, user_group: group, role: "admin")
       end
@@ -57,13 +57,13 @@ module Decidim
     end
 
     describe "multiple groups" do
-      let!(:group_a) { create(:user_group, organization: organization, name: "Group A") }
-      let!(:group_b) { create(:user_group, organization: organization, name: "Group B") }
+      let!(:group_a) { create(:user_group, organization:, name: "Group A") }
+      let!(:group_b) { create(:user_group, organization:, name: "Group B") }
       let!(:membership_a) do
-        create(:user_group_membership, user: user, user_group: group_a, role: "creator")
+        create(:user_group_membership, user:, user_group: group_a, role: "creator")
       end
       let!(:membership_b) do
-        create(:user_group_membership, user: user, user_group: group_b, role: "member")
+        create(:user_group_membership, user:, user_group: group_b, role: "member")
       end
 
       it "returns all groups the user belongs to" do
@@ -73,10 +73,10 @@ module Decidim
 
     describe "cross-organization isolation" do
       let(:other_organization) { create(:organization) }
-      let!(:group) { create(:user_group, organization: organization) }
+      let!(:group) { create(:user_group, organization:) }
       let!(:other_group) { create(:user_group, organization: other_organization) }
       let!(:membership) do
-        create(:user_group_membership, user: user, user_group: group, role: "creator")
+        create(:user_group_membership, user:, user_group: group, role: "creator")
       end
 
       it "only returns groups from the user's memberships" do

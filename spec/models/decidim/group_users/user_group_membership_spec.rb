@@ -6,12 +6,12 @@ module Decidim
   module GroupUsers
     describe UserGroupMembership do
       let(:organization) { create(:organization) }
-      let(:user) { create(:user, organization: organization) }
-      let(:user_group) { create(:user_group, organization: organization) }
+      let(:user) { create(:user, organization:) }
+      let(:user_group) { create(:user_group, organization:) }
 
       describe "associations" do
         let(:membership) do
-          create(:user_group_membership, user: user, user_group: user_group, role: "creator")
+          create(:user_group_membership, user:, user_group:, role: "creator")
         end
 
         it "belongs to a user" do
@@ -40,7 +40,7 @@ module Decidim
             membership = described_class.create!(
               decidim_user_id: user.id,
               decidim_user_group_id: user_group.id,
-              role: role
+              role:
             )
             expect(membership.role).to eq(role)
             membership.destroy!
@@ -50,7 +50,7 @@ module Decidim
 
       describe "referential integrity" do
         let!(:membership) do
-          create(:user_group_membership, user: user, user_group: user_group, role: "creator")
+          create(:user_group_membership, user:, user_group:, role: "creator")
         end
 
         it "can access the user's name" do
@@ -71,13 +71,13 @@ module Decidim
       end
 
       describe "multiple memberships" do
-        let(:other_user) { create(:user, organization: organization) }
+        let(:other_user) { create(:user, organization:) }
 
         let!(:membership_a) do
-          create(:user_group_membership, user: user, user_group: user_group, role: "creator")
+          create(:user_group_membership, user:, user_group:, role: "creator")
         end
         let!(:membership_b) do
-          create(:user_group_membership, user: other_user, user_group: user_group, role: "member")
+          create(:user_group_membership, user: other_user, user_group:, role: "member")
         end
 
         it "allows multiple users in one group" do
