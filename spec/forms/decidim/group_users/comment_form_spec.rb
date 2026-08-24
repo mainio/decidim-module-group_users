@@ -6,8 +6,13 @@ module Decidim
   module Comments
     describe CommentForm do
       let(:organization) { create(:organization) }
+<<<<<<< HEAD
       let(:user) { create(:user, organization: organization) }
       let(:user_group) { create(:user_group, organization: organization) }
+=======
+      let(:user) { create(:user, organization:) }
+      let(:user_group) { create(:user_group, organization:) }
+>>>>>>> develop
 
       describe "user_group_id attribute" do
         it "accepts a user_group_id" do

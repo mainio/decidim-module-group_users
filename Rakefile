@@ -7,7 +7,9 @@ def install_module(path)
 
   Dir.chdir(path) do
     system("bundle exec rake decidim_group_users:install:migrations")
-    system("bundle exec rake db:migrate")
+    system("bundle exec rake decidim_group_users:neutralize_user_group_migrations")
+    system("rm -f db/schema.rb")
+    system("bundle exec rake db:drop db:create db:migrate")
   end
 end
 
@@ -28,8 +30,6 @@ task :development_app do
       "#{base_app_name}_development_app",
       "--path",
       "..",
-      "--recreate_db",
-      "--seed_db",
       "--demo"
     )
   end

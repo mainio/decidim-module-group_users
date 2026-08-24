@@ -4,14 +4,14 @@ require "spec_helper"
 
 describe "Comments as user group" do
   let(:organization) { create(:organization) }
-  let(:user) { create(:user, :confirmed, organization: organization) }
-  let(:participatory_process) { create(:participatory_process, :with_steps, organization: organization) }
+  let(:user) { create(:user, :confirmed, organization:) }
+  let(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
   let(:component) { create(:proposal_component, participatory_space: participatory_process) }
-  let(:proposal) { create(:proposal, component: component) }
+  let(:proposal) { create(:proposal, component:) }
 
-  let!(:user_group) { create(:user_group, organization: organization, name: "My Test Group") }
+  let!(:user_group) { create(:user_group, organization:, name: "My Test Group") }
   let!(:membership) do
-    create(:user_group_membership, user: user, user_group: user_group, role: "creator")
+    create(:user_group_membership, user:, user_group:, role: "creator")
   end
 
   before do
@@ -114,7 +114,7 @@ describe "Comments as user group" do
   end
 
   context "when user belongs to an unverified group" do
-    let!(:user_group) { create(:user_group, :unverified, organization: organization, name: "Unverified Group") }
+    let!(:user_group) { create(:user_group, :unverified, organization:, name: "Unverified Group") }
 
     it "does not show the unverified group in the dropdown" do
       within ".add-comment" do
@@ -136,9 +136,9 @@ describe "Comments as user group" do
   end
 
   context "when user belongs to multiple groups" do
-    let!(:second_group) { create(:user_group, organization: organization, name: "Second Group") }
+    let!(:second_group) { create(:user_group, organization:, name: "Second Group") }
     let!(:second_membership) do
-      create(:user_group_membership, user: user, user_group: second_group, role: "admin")
+      create(:user_group_membership, user:, user_group: second_group, role: "admin")
     end
 
     it "shows all groups in the dropdown" do

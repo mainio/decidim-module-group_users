@@ -8,8 +8,8 @@ module Decidim
       let(:organization) { create(:organization) }
 
       describe ".verified" do
-        let!(:verified_group) { create(:user_group, organization: organization, officialized_at: Time.current) }
-        let!(:unverified_group) { create(:user_group, :unverified, organization: organization) }
+        let!(:verified_group) { create(:user_group, organization:, officialized_at: Time.current) }
+        let!(:unverified_group) { create(:user_group, :unverified, organization:) }
 
         it "returns only verified groups" do
           expect(described_class.verified).to include(verified_group)
@@ -18,7 +18,7 @@ module Decidim
       end
 
       describe "#deleted?" do
-        let(:group) { create(:user_group, organization: organization) }
+        let(:group) { create(:user_group, organization:) }
 
         it "returns false when deleted_at is nil" do
           expect(group.deleted?).to be(false)
@@ -31,10 +31,10 @@ module Decidim
       end
 
       describe "associations" do
-        let(:group) { create(:user_group, organization: organization) }
-        let(:user) { create(:user, organization: organization) }
+        let(:group) { create(:user_group, organization:) }
+        let(:user) { create(:user, organization:) }
         let!(:membership) do
-          create(:user_group_membership, user: user, user_group: group, role: "creator")
+          create(:user_group_membership, user:, user_group: group, role: "creator")
         end
 
         it "has many memberships" do

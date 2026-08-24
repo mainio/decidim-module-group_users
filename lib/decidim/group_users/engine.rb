@@ -5,6 +5,10 @@ module Decidim
     class Engine < ::Rails::Engine
       isolate_namespace Decidim::GroupUsers
 
+      rake_tasks do
+        load File.expand_path("../../tasks/neutralize_user_group_migrations.rake", __dir__)
+      end
+
       initializer "decidim_group_users.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end

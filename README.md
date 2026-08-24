@@ -19,8 +19,33 @@ gem "decidim-group_users", git: "git@github.com:mainio/decidim-module-group_user
 And then execute:
 
 ```bash
-$ bundle install
+bundle install
 ```
+
+**Important:** This module must be installed **before** running Decidim's database migrations. Decidim 0.32 ships migrations that permanently drop all user group tables and columns. If those migrations run first, user group data will be lost and cannot be recovered.
+
+After copying migrations, run the neutralization task before migrating:
+
+```bash
+rails decidim:install:migrations
+rails decidim_group_users:install:migrations
+rails decidim_group_users:neutralize_user_group_migrations
+rails db:migrate
+```
+
+The neutralization task rewrites the upstream removal migrations as no-ops so they are recorded as "run" without actually dropping any tables or columns.
+
+## Upgrading Decidim
+
+When upgrading Decidim (e.g. from 0.31 to 0.32), follow this exact order:
+
+1. Update the Decidim version in your `Gemfile`
+2. Run `bundle update decidim`
+3. Copy new migrations: `rails decidim:install:migrations`
+4. **Neutralize the removal migrations:** `rails decidim_group_users:neutralize_user_group_migrations`
+5. Run migrations: `rails db:migrate`
+
+**Do not skip step 4.** If `rails db:migrate` runs before neutralization, the user group tables will be dropped and all associated data will be permanently lost.
 
 ## Usage
 
