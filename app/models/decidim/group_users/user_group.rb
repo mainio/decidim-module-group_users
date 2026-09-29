@@ -19,7 +19,7 @@ module Decidim
       end
 
       def verified?
-        extended_data["verified_at"]
+        extended_data["verified_at"].present?
       end
 
       def presenter
