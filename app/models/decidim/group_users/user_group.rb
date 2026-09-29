@@ -15,6 +15,14 @@ module Decidim
         deleted_at.present?
       end
 
+      def confirmed?
+        confirmed_at.present?
+      end
+
+      def verified?
+        extended_data["verified_at"]
+      end
+
       def presenter
         Decidim::UserGroupPresenter.new(self)
       end
