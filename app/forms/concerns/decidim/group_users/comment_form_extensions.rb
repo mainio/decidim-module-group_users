@@ -9,7 +9,7 @@ module Decidim
         attribute :user_group_id, Integer
 
         def user_group
-          return unless user_group_id.present?
+          return if user_group_id.blank?
 
           Decidim::GroupUsers::UserGroup.find_by(id: user_group_id)
         end

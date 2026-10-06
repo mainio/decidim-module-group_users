@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "Comment as user group" do
+describe "Comment as user group" do # rubocop:disable RSpec/DescribeClass
   let(:organization) { create(:organization) }
   let(:user) { create(:user, :confirmed, organization:) }
   let(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
@@ -42,7 +42,7 @@ describe "Comment as user group" do
 
       within ".comment__as" do
         # Click to open dropdown
-        find("button").click
+        click_button
         expect(page).to have_content("My Test Group")
       end
     end
@@ -51,7 +51,7 @@ describe "Comment as user group" do
       visit_proposal
 
       within ".comment__as" do
-        find("button").click
+        click_button
         find("li", text: "My Test Group").click
       end
 
@@ -65,7 +65,7 @@ describe "Comment as user group" do
       within ".add-comment" do
         # Select the user group
         within ".comment__as" do
-          find("button").click
+          click_button
           find("li", text: "My Test Group").click
         end
 
@@ -94,7 +94,7 @@ describe "Comment as user group" do
 
       within ".add-comment" do
         within ".comment__as" do
-          find("button").click
+          click_button
           find("li", text: "My Test Group").click
         end
 
@@ -119,8 +119,8 @@ describe "Comment as user group" do
       visit_proposal
 
       within ".add-comment" do
-        expect(page).not_to have_css(".comment__as button")
-        expect(page).not_to have_content("Unverified Group")
+        expect(page).to have_no_css(".comment__as button")
+        expect(page).to have_no_content("Unverified Group")
       end
     end
   end
@@ -133,7 +133,7 @@ describe "Comment as user group" do
       visit_proposal
 
       within ".add-comment" do
-        expect(page).not_to have_css(".comment__as button")
+        expect(page).to have_no_css(".comment__as button")
       end
     end
   end
@@ -148,7 +148,7 @@ describe "Comment as user group" do
       visit_proposal
 
       within ".comment__as" do
-        find("button").click
+        click_button
         expect(page).to have_content("My Test Group")
         expect(page).to have_content("Second Group")
       end
@@ -158,12 +158,12 @@ describe "Comment as user group" do
       visit_proposal
 
       within ".comment__as" do
-        find("button").click
+        click_button
         find("li", text: "My Test Group").click
 
         expect(find("input[value='#{user_group.id}']", visible: :all)).to be_checked
 
-        find("button").click
+        click_button
         find("li", text: "Second Group").click
 
         expect(find("input[value='#{second_group.id}']", visible: :all)).to be_checked

@@ -2,8 +2,9 @@
 
 require "spec_helper"
 
+# rubocop:disable RSpec/DescribeClass
 describe "Decidim::GroupUsers.neutralize_user_group_migrations!" do
-  let(:migrations_dir) { Rails.root.join("db", "migrate") }
+  let(:migrations_dir) { Rails.root.join("db/migrate") }
 
   it "has neutralized RemoveUserGroupCore" do
     file = Dir.glob(migrations_dir.join("*_remove_user_group_core{,.*}.rb")).first
@@ -33,3 +34,4 @@ describe "Decidim::GroupUsers.neutralize_user_group_migrations!" do
     expect(content).not_to include("def up")
   end
 end
+# rubocop:enable RSpec/DescribeClass

@@ -2,6 +2,7 @@
 
 require "spec_helper"
 
+# rubocop:disable RSpec/DescribeClass
 describe "Database schema" do
   it "has the decidim_user_group_memberships table" do
     expect(ActiveRecord::Base.connection.table_exists?(:decidim_user_group_memberships)).to be(true)
@@ -23,3 +24,4 @@ describe "Database schema" do
     expect(ActiveRecord::Base.connection.column_exists?(:decidim_likes, :decidim_user_group_id)).to be(true)
   end
 end
+# rubocop:enable RSpec/DescribeClass

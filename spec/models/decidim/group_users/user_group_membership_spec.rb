@@ -36,7 +36,7 @@ module Decidim
         end
 
         it "supports different roles" do
-          %w[creator admin member requested].each do |role|
+          %w(creator admin member requested).each do |role|
             membership = described_class.create!(
               decidim_user_id: user.id,
               decidim_user_group_id: user_group.id,
