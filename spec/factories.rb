@@ -11,10 +11,11 @@ FactoryBot.define do
     sequence(:email) { |n| "group_#{n}@test.local" }
     encrypted_password { "x" }
     confirmed_at { Time.current }
-    officialized_at { Time.current }
+    officialized_at { nil }
+    extended_data { { "verified_at" => Time.current.iso8601 } }
 
     trait :unverified do
-      officialized_at { nil }
+      extended_data { { "verified_at" => nil } }
     end
   end
 

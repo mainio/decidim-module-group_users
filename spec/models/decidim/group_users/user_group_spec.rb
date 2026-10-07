@@ -8,12 +8,58 @@ module Decidim
       let(:organization) { create(:organization) }
 
       describe ".verified" do
-        let!(:verified_group) { create(:user_group, organization: organization, officialized_at: Time.current) }
-        let!(:unverified_group) { create(:user_group, :unverified, organization: organization) }
+        let!(:verified_group) do
+          create(
+            :user_group,
+            organization:,
+            extended_data: { "verified_at" => Time.current.iso8601 }
+          )
+        end
 
-        it "returns only verified groups" do
+        let!(:unverified_group) do
+          create(
+            :user_group,
+            organization:,
+            extended_data: { "verified_at" => nil }
+          )
+        end
+
+        it "returns groups with verified_at in extended_data" do
           expect(described_class.verified).to include(verified_group)
           expect(described_class.verified).not_to include(unverified_group)
+        end
+
+        it "does not use officialized_at to determine verification" do
+          group = create(
+            :user_group,
+            organization:,
+            officialized_at: Time.current,
+            extended_data: { "verified_at" => nil }
+          )
+
+          expect(described_class.verified).not_to include(group)
+        end
+      end
+
+      describe "#verified?" do
+        it "returns true when verified_at is present in extended_data" do
+          group = create(
+            :user_group,
+            organization:,
+            extended_data: { "verified_at" => Time.current.iso8601 }
+          )
+
+          expect(group.verified?).to be(true)
+        end
+
+        it "returns false when verified_at is not present in extended_data" do
+          group = create(
+            :user_group,
+            organization:,
+            extended_data: { "verified_at" => nil }
+          )
+
+          expect(group.verified?).to be(false)
         end
       end
 
@@ -27,6 +73,28 @@ module Decidim
         it "returns true when deleted_at is set" do
           group.update_columns(deleted_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
           expect(group.deleted?).to be(true)
+        end
+      end
+
+      describe "#confirmed?" do
+        it "returns true when confirmed_at is set" do
+          group = create(:user_group, organization:, confirmed_at: Time.current)
+
+          expect(group.confirmed?).to be(true)
+        end
+
+        it "returns false when confirmed_at is nil" do
+          group = create(:user_group, organization:, confirmed_at: nil)
+
+          expect(group.confirmed?).to be(false)
+        end
+      end
+
+      describe "#presenter" do
+        let(:group) { create(:user_group, organization:) }
+
+        it "returns a user group presenter" do
+          expect(group.presenter).to be_a(Decidim::UserGroupPresenter)
         end
       end
 
