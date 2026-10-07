@@ -9,7 +9,9 @@ module Decidim
                dependent: :destroy
       has_many :users, through: :memberships
 
-      scope :verified, -> { where.not(officialized_at: nil) }
+      scope :verified, -> {
+        where("extended_data->>'verified_at' IS NOT NULL")
+      }
 
       def deleted?
         deleted_at.present?
