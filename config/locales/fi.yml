@@ -1,0 +1,8 @@
+fi:
+  decidim:
+    components:
+      add_comment_form:
+        form:
+          user_group_id:
+            your_profile: Oma profiilisi
+            comment_as: Kommentoi käyttäjänä
