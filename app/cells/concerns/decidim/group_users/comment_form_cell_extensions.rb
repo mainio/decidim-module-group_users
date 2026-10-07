@@ -21,6 +21,19 @@ module Decidim
 
           @verified_user_groups ||= Decidim::GroupUsers::ManageableGroupUsers.for(current_user).verified
         end
+
+        # Explicitly render the GroupUsers template to avoid conflicts
+        # with other modules overriding the same view.
+        def group_users_comment_as
+          render(
+            view: :comment_as,
+            prefixes: [
+              Decidim::GroupUsers::Engine.root.join(
+                "app/cells/decidim/comments/comment_form"
+              ).to_s
+            ]
+          )
+        end
       end
     end
   end
