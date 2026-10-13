@@ -78,6 +78,33 @@ describe "Comment as user group" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_content("This is a group comment")
     end
 
+    it "displays the user group as the comment author", :slow do
+      visit_proposal
+
+      within ".add-comment" do
+        within ".comment__as" do
+          click_button
+          find("li", text: "My Test Group").click
+        end
+
+        fill_in "comment[body]", with: "Comment authored by my group"
+        click_on "Publish comment"
+      end
+
+      # Wait for the asynchronous submission to finish
+      expect(page).to have_content("Comment authored by my group")
+
+      comment = Decidim::Comments::Comment.order(:id).last
+
+      expect(comment).not_to be_nil
+      expect(comment.decidim_user_group_id).to eq(user_group.id)
+
+      within "#comment_#{comment.id}" do
+        expect(page).to have_content("My Test Group")
+        expect(page).to have_no_content(user.name)
+      end
+    end
+
     it "submits a comment as the user (default)" do
       visit_proposal
 

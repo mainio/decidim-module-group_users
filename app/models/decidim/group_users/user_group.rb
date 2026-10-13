@@ -9,7 +9,7 @@ module Decidim
                dependent: :destroy
       has_many :users, through: :memberships
 
-      scope :verified, -> {
+      scope :verified, lambda {
         where("extended_data->>'verified_at' IS NOT NULL")
       }
 
