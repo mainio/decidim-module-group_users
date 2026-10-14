@@ -21,6 +21,10 @@
         @apply -mt-3.5;
       }
     }
+
+    &-label {
+      @apply text-left text-xs pb-5;
+    }
   }
 }
 
